@@ -18,9 +18,11 @@ export const FavoriteButton = styled.a`
 `;
 
 export const Image = styled.img`
-  width: 100%;
+  /* width: 100%; */
   border-radius: 16px;
-  /* height: 268px; */
+  height: 268px;
+  /* background-size: contain; */
+  object-fit: cover;
 `;
 
 export const LineWare = styled.div`
