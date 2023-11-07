@@ -1,31 +1,55 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  DataListMake,
   FilterForm,
-  Input,
+  InputTo,
+  InputFrom,
+  InputBox,
   Label,
-  Option,
   ButtonSearch,
 } from './Filter.styled';
-import { useFormik } from 'formik';
+import { ErrorMessage, useFormik } from 'formik';
 import { MAKES, selectAdverts, selectFilter } from 'redux/adverts/selectors';
 import { changeFilter } from 'redux/adverts/filterSlice';
 import { ReactComponent as DropdownIcon } from '../Icons/chevron-down.svg';
 import { ReactComponent as DropupIcon } from '../Icons/chevron-up.svg';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const validationSchema = Yup.object().shape({
+  from: Yup.number()
+    .min(0, 'Число повинно бути >= 0')
+    .typeError('Невірний формат числа')
+    .lessThan(Yup.ref('to'), "Значення 'From' повинно бути менше ніж 'To'"),
+  to: Yup.number()
+    .min(0, 'Число повинно бути >= 0')
+    .typeError('Невірний формат числа')
+    .moreThan(Yup.ref('from')),
+});
 
 const Filter = () => {
   const filter = useSelector(selectFilter);
   const adverts = useSelector(selectAdverts);
-  const rentalPrices = adverts
-    .map(advert => parseInt(advert.rentalPrice.slice(1)))
-    .sort((a, b) => a - b)
-    .map(price => {
-      price.toString();
-      return `$${price}`;
-    });
+  const [make, setMake] = useState();
+  const [price, setPrice] = useState();
 
+  const rentalPrices = adverts
+    .reduce(
+      (a, c) => (
+        a.map(e => e.rentalPrice).includes(c.rentalPrice) || a.push(c), a
+      ),
+      []
+    )
+    .map(advert => parseInt(advert.rentalPrice.slice(1)))
+    .sort((a, b) => a - b);
+  // .map(price => {
+  //   price.toString();
+  //   return `$${price}`;
+  // });
+  console.log(rentalPrices);
   const dispatch = useDispatch();
 
   const handleSubmit = async e => {
@@ -37,86 +61,118 @@ const Filter = () => {
   console.log(filter);
   const formik = useFormik({
     initialValues: {
-      make: filter.make || '',
-      price: filter.price || '',
-      from: filter.from || '',
-      to: filter.to || '',
+      make: filter.make,
+      price: filter.price,
+      from: filter.from,
+      to: filter.to,
     },
     onSubmit: handleSubmit,
+    validationSchema: validationSchema,
   });
-  // const disabledFunc = () => {
-  //   const birthdayMonth = formatWithLeadingZeros(
-  //     formik.values.birthday.getMonth() + 1
-  //   );
-  //   const dayOfMonth = formatWithLeadingZeros(formik.values.birthday.getDate());
-  //   const updateBirthday = `${formik.values.birthday.getFullYear()}-${birthdayMonth}-${dayOfMonth}`;
 
-  //   const disabled =
-  //     // user.userName === formik.values.name &&
-  //     // user.phone === formik.values.number &&
-  //     // user.birthday === updateBirthday &&
-  //     // user.skype === formik.values.skype &&
-  //     // user.email === formik.values.email;
+  useEffect(() => {
+    formik.errors.from && toast.error(`${formik.errors.from}`);
+    formik.errors.to && toast.error(`${formik.errors.to}`);
+  }, [formik.errors.from, formik.errors.to]);
 
-  //   return disabled;
-  // };
+  const formatNumber = value => {
+    // Видаляємо всі нецифрові символи та коми з введеного значення
+    const cleanValue = value.replace(/[^0-9]/g, '');
+
+    // Перевіряємо, чи є значення достатньо довгим для додавання ком
+    if (cleanValue.length > 3) {
+      // Розділяємо значення на групи по три цифри та додаємо коми
+      const parts = [];
+      for (let i = cleanValue.length; i > 0; i -= 3) {
+        parts.unshift(cleanValue.slice(Math.max(i - 3, 0), i));
+      }
+      return parts.join(',');
+    } else {
+      return cleanValue;
+    }
+  };
+
   return (
     <>
       <FilterForm onSubmit={handleSubmit}>
-        <Label>
-          Car brand
-          {/* <Input type="text" list="make" /> */}
-          <DataListMake id="make">
-            {MAKES.map(make => (
-              <Option value={make}>{make}</Option>
-            ))}
-            {/* <option value="apple">Apple</option>
-                <option value="banana">Banana</option>
-                <option value="orange">Orange</option> */}
-          </DataListMake>
-        </Label>
         <Label>
           Car brand
           <Dropdown
             type="text"
             name="make"
             options={MAKES}
-            onChange={formik.handleChange}
-            value={formik.values.make}
+            onChange={setMake}
+            value={make}
             placeholder="Enter the text"
-            className="select-makes"
-            controlClassName="selectControl-makes"
-            menuClassName="selectMenu-makes"
+            className="select"
+            controlClassName="selectControl"
+            menuClassName="selectMenu"
             arrowOpen={<DropupIcon />}
             arrowClosed={<DropdownIcon />}
           />
         </Label>
+        <Label>
+          Price/ 1 hour
+          <Dropdown
+            type="text"
+            name="price"
+            options={rentalPrices}
+            onChange={e => {
+              setPrice(`$${e.value}`);
+            }}
+            value={price}
+            placeholder="To $"
+            className="select"
+            controlClassName="selectControl"
+            menuClassName="selectMenu"
+            arrowOpen={<DropupIcon />}
+            arrowClosed={<DropdownIcon />}
+          />
+        </Label>
+        <Label>
+          Сar mileage / km
+          <InputBox>
+            <div style={{ overflow: 'hidden', position: 'relative' }}>
+              <span className="span-text">From</span>
+              <InputFrom
+                type="text"
+                name="from"
+                // placeholder="To"
+                onChange={e => {
+                  const { value } = e.target;
+                  const formattedValue = value.replace(/\D/g, ''); // Вилучаємо всі нецифрові символи
+                  console.log(formattedValue);
+                  formik.handleChange({
+                    target: { name: 'from', value: formattedValue },
+                  });
+                }}
+                value={`From ${formatNumber(formik.values.from)}`}
+                hasError={formik.errors.from}
+              />
+            </div>
+            <div style={{ overflow: 'hidden', position: 'relative' }}>
+              <span className="span-text">To</span>
+              <InputTo
+                type="text"
+                name="to"
+                // placeholder="To"
+                onChange={e => {
+                  const { value } = e.target;
+                  const formattedValue = value.replace(/\D/g, ''); // Вилучаємо всі нецифрові символи
+                  console.log(formattedValue);
+                  formik.handleChange({
+                    target: { name: 'from', value: formattedValue },
+                  });
+                }}
+                value={`To ${formatNumber(formik.values.to)}`}
+                hasError={formik.errors.to}
+              />
+            </div>
+          </InputBox>
+        </Label>
+        <ToastContainer />
         {/*
-        <InputBox>
-          <Label hasError={formik.errors.name}>
-            User Name
-            <Input
-              type="text"
-              name="name"
-              maxLength="16"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              hasError={formik.errors.name}
-            />
-            {formik.errors.name && <div>{formik.errors.name}</div>}
-          </Label>
-          <Label hasError={formik.errors.number}>
-            Phone
-            <Input
-              type="tel"
-              name="number"
-              onChange={formik.handleChange}
-              value={formik.values.number}
-              hasError={formik.errors.number}
-            />
-            {formik.errors.number && <div>{formik.errors.number}</div>}
-          </Label>
-
+        
           <Label>
             Birthday
             <DatePicker
