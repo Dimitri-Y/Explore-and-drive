@@ -36,7 +36,7 @@ const CarList = ({ option }) => {
   const IncPage = () => {
     dispatch(incPage());
   };
-  console.log(page);
+
   return (
     <>
       <List>

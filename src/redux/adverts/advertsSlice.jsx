@@ -53,7 +53,6 @@ const advertsSlice = createSlice({
           }
         });
         state.totalLimit = action.payload.data.length < state.limit;
-        console.log(state.totalLimit);
       })
       .addCase(fetchAdverts.rejected, (state, action) => {
         handleRejected(state, action);
