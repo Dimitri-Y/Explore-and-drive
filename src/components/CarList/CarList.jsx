@@ -24,7 +24,6 @@ const CarList = ({ option }) => {
       })
       .catch(error => {
         toast.error(`${error}`);
-        console.log(error);
       });
   }, [dispatch]);
 

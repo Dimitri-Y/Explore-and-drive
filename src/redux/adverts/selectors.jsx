@@ -13,7 +13,23 @@ export const selectFavorites = state => state.adverts.favorites;
 export const selectVisibleAdverts = createSelector(
   [selectAdverts, selectFilter],
   (adverts, filter) => {
-    return adverts;
+    return adverts?.filter(advert => {
+      const cleanPrice = filter.price.replace(/[^0-9]/g, '');
+      const advertCleanPrice = advert.rentalPrice.replace(/[^0-9]/g, '');
+
+      if (filter.make !== '' && advert.make !== filter.make) {
+        return false;
+      }
+      if (filter.price !== '' && advertCleanPrice > cleanPrice) {
+        return false;
+      }
+      if (filter.from >= 0 && filter.to !== 0) {
+        if (filter.from <= advert.mileage && filter.to >= advert.mileage)
+          return true;
+        else return false;
+      }
+      return true;
+    });
   }
 );
 

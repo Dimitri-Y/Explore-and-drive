@@ -4,7 +4,7 @@ export const FilterForm = styled.form`
   padding-top: 50px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   padding-bottom: 18px;
   padding-left: 18px;
   margin-left: auto;
@@ -72,12 +72,19 @@ export const InputBox = styled.div`
     line-height: 14px;
     color: #ff0000;
   }
+  input::placeholder {
+    font-family: 'Manrope-500';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(18, 20, 23, 1);
+  }
   /* margin-bottom: 40px; */
 `;
 
 export const InputFrom = styled.input`
   width: 160px;
-  padding: 14px 0px 14px 70px;
+  padding: 14px 0px 14px 24px;
   border: none;
   background: linear-gradient(
       0deg,
@@ -92,16 +99,25 @@ export const InputFrom = styled.input`
   line-height: 20px;
   color: rgba(18, 20, 23, 1);
   border-radius: 14px 0px 0px 14px;
+  outline: none;
   ${props =>
     props.hasError &&
     `
       border: 2px solid red; 
     `}
+
+  input::placeholder {
+    font-family: 'Manrope-500';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(18, 20, 23, 1);
+  }
 `;
 
 export const InputTo = styled.input`
   width: 160px;
-  padding: 14px 0px 14px 50px;
+  padding: 14px 0px 14px 24px;
   border-radius: 0px 14px 14px 0px;
   border: none;
   background: linear-gradient(
@@ -115,11 +131,21 @@ export const InputTo = styled.input`
   font-weight: 500;
   line-height: 20px;
   color: rgba(18, 20, 23, 1);
+  outline: none;
+
   ${props =>
     props.hasError &&
     `
       border: 2px solid red; 
     `}
+
+  input::placeholder {
+    font-family: 'Manrope-500';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(18, 20, 23, 1);
+  }
 `;
 export const Label = styled.label`
   display: flex;
@@ -136,21 +162,27 @@ export const Label = styled.label`
 Label.shouldForwardProp = prop => prop !== 'hasError';
 
 export const ButtonSearch = styled.button`
-  font-family: 'Inter-SemiBold', sans-serif;
+  padding: 14px 44px 14px 44px;
+  width: 136px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(52, 112, 255, 1);
+  border: 0px;
+  font-family: 'Manrope-600';
   font-size: 14px;
   font-weight: 600;
-  line-height: 18px;
-  border: none;
-  padding: 14px 50px;
-  border-radius: 16px;
-  background: #3e85f3;
-  color: #fff;
+  line-height: 20px;
+  letter-spacing: 0em;
+  cursor: pointer;
+  color: white;
+  margin-top: 28px;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  @media (min-width: 768px) {
-    padding: 15px 83px;
-  }
-
-  &:disabled {
-    background-color: rgba(62, 133, 243, 0.5);
+  &:hover,
+  &:focus {
+    background-color: #0b44cd;
   }
 `;
