@@ -76,7 +76,6 @@ const Filter = () => {
     onSubmit: handleSubmit,
     validationSchema: validationSchema,
   });
-  console.log(filter);
   const formatNumber = value => {
     const cleanValue = value.replace(/[^0-9]/g, '');
     if (cleanValue.length > 3) {

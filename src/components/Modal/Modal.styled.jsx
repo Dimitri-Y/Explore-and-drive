@@ -18,18 +18,21 @@ export const StyleModal = styled.div`
 
   .modal_content {
     position: relative;
-    /* min-width: 280px; */
-    max-height: 100vh;
-    max-width: 100vh;
     overflow: hidden;
     border-radius: 8px;
     border: 1px solid rgba(220, 227, 229, 0.8);
     background: #fff;
     box-shadow: 0px 4px 16px 0px rgba(17, 17, 17, 0.1);
-
-    @media screen and (min-width: 768px) {
-      /* height: 50%; */
+    @media screen and (max-width: 768px) {
+      height: 90%;
     }
+    .form::-webkit-scrollbar {
+      width: 1px;
+    }
+  }
+
+  .modal_content::-webkit-scrollbar {
+    width: 0px;
   }
   .modal_tittle {
     position: absolute;

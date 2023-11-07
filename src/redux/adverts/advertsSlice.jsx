@@ -8,6 +8,9 @@ const advertsInitialState = {
   isLoading: false,
   error: null,
   favorites: savedFavorites || [],
+  page: 1,
+  limit: 12,
+  totalLimit: false,
 };
 
 const handlePending = state => {
@@ -32,6 +35,9 @@ const advertsSlice = createSlice({
         : state.favorites.push(action.payload);
       localStorage.setItem('favorites', JSON.stringify(state.favorites));
     },
+    incPage(state) {
+      state.page = state.page + 1;
+    },
   },
   extraReducers: builder => {
     builder
@@ -41,12 +47,18 @@ const advertsSlice = createSlice({
       .addCase(fetchAdverts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.items = action.payload;
+        action.payload.data.forEach(newAdvert => {
+          if (!state.items.some(advert => advert.id === newAdvert.id)) {
+            state.items.push(newAdvert);
+          }
+        });
+        state.totalLimit = action.payload.data.length < state.limit;
+        console.log(state.totalLimit);
       })
       .addCase(fetchAdverts.rejected, (state, action) => {
         handleRejected(state, action);
       });
   },
 });
-export const { changeFavorites } = advertsSlice.actions;
+export const { changeFavorites, incPage } = advertsSlice.actions;
 export const advertsReducer = advertsSlice.reducer;

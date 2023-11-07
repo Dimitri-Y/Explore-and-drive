@@ -3,14 +3,14 @@ import { styled } from 'styled-components';
 export const LearnForm = styled.div`
   padding: 40px;
   overflow: auto;
+  height: 80vh;
+  .form::-webkit-scrollbar {
+    width: 1px;
+  }
   .inline-block {
-    /* max-height: calc(80vh); */
     display: flex;
     flex-direction: column;
   }
-  /* @media screen and (min-width: 768px) {
-    height: 100%;
-  } */
 `;
 export const Image = styled.img`
   width: 461px;
@@ -59,7 +59,7 @@ export const Description = styled.div`
 `;
 export const RentalConditionList = styled.ul`
   display: flex;
-  width: 300px;
+  max-width: 461px;
   flex-wrap: wrap;
   gap: 8px;
 `;

@@ -10,6 +10,10 @@ export const selectError = state => state.adverts.error;
 
 export const selectFavorites = state => state.adverts.favorites;
 
+export const selectPage = state => state.adverts.page;
+
+export const selectTotalLimit = state => state.adverts.totalLimit;
+
 export const selectVisibleAdverts = createSelector(
   [selectAdverts, selectFilter],
   (adverts, filter) => {
@@ -18,7 +22,6 @@ export const selectVisibleAdverts = createSelector(
       const advertCleanPrice =
         advert.rentalPrice &&
         parseInt(advert.rentalPrice.replace(/[^0-9]/g, ''));
-      console.log(advertCleanPrice);
       if (filter.make !== '' && advert.make !== filter.make) {
         return false;
       }
