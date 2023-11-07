@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkexplore_and_drive=self.webpackChunkexplore_and_drive||[]).push([[415],{5415:function(e,n,r){r.r(n),r.d(n,{default:function(){return a}});var i=r(5558),l=r(184);function a(){return(0,l.jsx)("div",{children:(0,l.jsxs)(i.F,{children:["Welcome",(0,l.jsx)("span",{role:"img","aria-label":"Greeting icon"})]})})}}}]);
-//# sourceMappingURL=415.6c1b8760.chunk.js.map
