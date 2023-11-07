@@ -4,6 +4,7 @@ export const FilterForm = styled.form`
   padding-top: 50px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-end;
   padding-bottom: 18px;
   padding-left: 18px;
@@ -79,7 +80,6 @@ export const InputBox = styled.div`
     line-height: 20px;
     color: rgba(18, 20, 23, 1);
   }
-  /* margin-bottom: 40px; */
 `;
 
 export const InputFrom = styled.input`

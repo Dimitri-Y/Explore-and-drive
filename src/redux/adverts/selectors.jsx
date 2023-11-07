@@ -14,9 +14,11 @@ export const selectVisibleAdverts = createSelector(
   [selectAdverts, selectFilter],
   (adverts, filter) => {
     return adverts?.filter(advert => {
-      const cleanPrice = filter.price.replace(/[^0-9]/g, '');
-      const advertCleanPrice = advert.rentalPrice.replace(/[^0-9]/g, '');
-
+      const cleanPrice = parseInt(filter.price.replace(/[^0-9]/g, ''));
+      const advertCleanPrice =
+        advert.rentalPrice &&
+        parseInt(advert.rentalPrice.replace(/[^0-9]/g, ''));
+      console.log(advertCleanPrice);
       if (filter.make !== '' && advert.make !== filter.make) {
         return false;
       }

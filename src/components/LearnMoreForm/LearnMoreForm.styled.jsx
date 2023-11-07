@@ -2,18 +2,15 @@ import { styled } from 'styled-components';
 
 export const LearnForm = styled.div`
   padding: 40px;
-
+  overflow: auto;
   .inline-block {
-    max-height: calc(80vh);
+    /* max-height: calc(80vh); */
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
   }
-  .inline-block::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
+  /* @media screen and (min-width: 768px) {
+    height: 100%;
+  } */
 `;
 export const Image = styled.img`
   width: 461px;

@@ -14,7 +14,6 @@ import { ReactComponent as DropdownIcon } from '../Icons/chevron-down.svg';
 import { ReactComponent as DropupIcon } from '../Icons/chevron-up.svg';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import { useEffect } from 'react';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,11 +22,11 @@ const validationSchema = Yup.object().shape({
   from: Yup.number()
     .min(0, 'Число повинно бути >= 0')
     .typeError('Невірний формат числа')
-    .lessThan(Yup.ref('to'), "Значення 'From' повинно бути менше ніж 'To'"),
+    .max(Yup.ref('to'), "Значення 'From' повинно бути менше ніж 'To'"),
   to: Yup.number()
     .min(0, 'Число повинно бути >= 0')
     .typeError('Невірний формат числа')
-    .moreThan(Yup.ref('from')),
+    .min(Yup.ref('from')),
 });
 
 const Filter = () => {
@@ -35,42 +34,49 @@ const Filter = () => {
   const adverts = useSelector(selectAdverts);
 
   const rentalPrices = Array.from(
-    new Set(adverts.map(advert => advert.rentalPrice))
+    new Set(
+      adverts
+        .filter(advert => advert.rentalPrice !== undefined)
+        .map(advert => {
+          return advert.rentalPrice !== undefined && advert.rentalPrice;
+        })
+    )
   )
     .map(price => {
-      return parseInt(price.slice(1));
+      return price && parseInt(price.slice(1));
     })
     .sort((a, b) => a - b);
+
+  const maxPrice = Math.max(...rentalPrices);
+  let prices = [];
+  for (let i = 0; i <= maxPrice; i += 10) {
+    prices.push(i);
+  }
 
   const dispatch = useDispatch();
 
   const handleSubmit = async e => {
     e.preventDefault();
     const { make, price, from, to } = formik.values;
-    if (formik.errors.from || formik.errors.to) {
-      dispatch(changeFilter({ make, price, from: 0, to: 0 }));
+    if (!formik.errors.from || !formik.errors.to) {
+      dispatch(changeFilter({ make, price, from: from, to: to }));
       formik.resetForm();
     } else {
-      dispatch(changeFilter({ make, price, from, to }));
-      formik.resetForm();
+      formik.errors.from && toast.error(`${formik.errors.from}`);
+      formik.errors.to && toast.error(`${formik.errors.to}`);
     }
   };
   const formik = useFormik({
     initialValues: {
-      make: filter.make,
-      price: filter.price,
-      from: filter.from,
-      to: filter.to,
+      make: filter.make || '',
+      price: filter.price || '',
+      from: filter.from || 0,
+      to: filter.to || 0,
     },
     onSubmit: handleSubmit,
     validationSchema: validationSchema,
   });
-
-  useEffect(() => {
-    formik.errors.from && toast.error(`${formik.errors.from}`);
-    formik.errors.to && toast.error(`${formik.errors.to}`);
-  }, [formik.errors.from, formik.errors.to]);
-
+  console.log(filter);
   const formatNumber = value => {
     const cleanValue = value.replace(/[^0-9]/g, '');
     if (cleanValue.length > 3) {
@@ -112,7 +118,7 @@ const Filter = () => {
           <Dropdown
             type="text"
             name="price"
-            options={rentalPrices}
+            options={prices}
             onChange={e => {
               formik.handleChange({
                 target: { name: 'price', value: `To $${e.value}` },

@@ -17,45 +17,59 @@ const LearnMoreForm = ({ advert }) => {
   const year = advert.year || ' ';
   const Id = advert.id;
 
-  const address = advert.address || ' ';
-  const cityCountry = address.slice(address.indexOf(',') + 2);
-  const city = cityCountry.slice(0, cityCountry.indexOf(','));
-  const country = cityCountry.slice(cityCountry.indexOf(',') + 2);
-  const company = advert.rentalCompany || ' ';
-  const type = advert.type || ' ';
-  const fuelConsumption = advert.fuelConsumption || ' ';
-  const engineSize = advert.engineSize || ' ';
+  const address = advert.address && advert.address;
+  const cityCountry = advert.address && address.slice(address.indexOf(',') + 2);
+  const city = advert.address && cityCountry.slice(0, cityCountry.indexOf(','));
+  const country =
+    advert.address && cityCountry.slice(cityCountry.indexOf(',') + 2);
+  const company = advert.rentalCompany;
+  const type = advert.type;
+  const fuelConsumption = advert.fuelConsumption;
+  const engineSize = advert.engineSize;
 
-  const description = advert.description || ' ';
+  const description = advert.description;
 
   const minimumAge =
-    parseInt(
-      advert.rentalConditions.slice(
-        advert.rentalConditions.indexOf('Minimum age:') +
-          'Minimum age:'.length +
-          1,
-        advert.rentalConditions.indexOf('\n')
-      )
-    ) || null;
-  const rentalPrice = parseInt(
-    advert.rentalPrice.slice(advert.rentalPrice.indexOf('$') + 1)
-  );
+    (advert.rentalConditions &&
+      parseInt(
+        advert.rentalConditions.slice(
+          advert.rentalConditions.indexOf('Minimum age:') +
+            'Minimum age:'.length +
+            1,
+          advert.rentalConditions.indexOf('\n')
+        )
+      )) ||
+    null;
+  const rentalPrice =
+    advert.rentalPrice &&
+    parseInt(advert.rentalPrice.slice(advert.rentalPrice.indexOf('$') + 1));
   const mileage = advert.mileage;
 
   const conditionsArray = advert.rentalConditions
-    .slice(advert.rentalConditions.indexOf(minimumAge.toString()) + 3)
-    .split('\n');
-  const conditionsElements = conditionsArray.map(condition => ({
-    condition: condition,
-    value: '',
-  }));
-  conditionsElements.unshift({ condition: 'Minimum age: ', value: minimumAge });
-  conditionsElements.push({ condition: 'Mileage: ', value: mileage });
-  conditionsElements.push({ condition: 'Price: ', value: rentalPrice });
+    ? advert.rentalConditions
+        .slice(advert.rentalConditions.indexOf(minimumAge.toString()) + 3)
+        .split('\n')
+    : [];
+  const conditionsElements = advert.rentalConditions
+    ? conditionsArray.map(condition => ({
+        condition: condition,
+        value: '',
+      }))
+    : [];
+
+  minimumAge &&
+    conditionsElements.unshift({
+      condition: 'Minimum age: ',
+      value: minimumAge,
+    });
+  mileage &&
+    conditionsElements.push({ condition: 'Mileage: ', value: mileage });
+  rentalPrice &&
+    conditionsElements.push({ condition: 'Price: ', value: rentalPrice });
   //#endregion
 
   return (
-    <LearnForm>
+    <LearnForm className="form">
       <Image
         src={
           advert.img
@@ -70,15 +84,22 @@ const LearnMoreForm = ({ advert }) => {
           {year}
         </MakeModelYear>
         <CarsOptions>
-          {city} | {country} | Id: {Id} | {company} | Year:{year} | Type: {type}{' '}
-          | Fuel Consumption: {fuelConsumption} | Engine Size: {engineSize}
+          {city && ` ${city} |`} {country && ` ${country} |`} Id: {Id}
+          {' |'}
+          {company && ` ${company} |`} {year && ` Year:${year} |`}
+          {type && ` Type: ${type} |`}
+          {fuelConsumption && ` Fuel Consumption: ${fuelConsumption} |`}
+          {engineSize && ` Engine Size: ${engineSize} |`}
         </CarsOptions>
         <Description>
           {description}
-          <p className="accessories">Accessories and functionalities:</p>
+          {advert.functionalities && advert.accessories && (
+            <p className="accessories">Accessories and functionalities:</p>
+          )}
         </Description>
         <CarsOptions>
-          {advert.accessories?.join(' | ')} |{' '}
+          {advert.accessories?.join(' | ')}
+          {advert.functionalities && '| '}
           {advert.functionalities?.join(' | ')}
         </CarsOptions>
         <Description>Rental Conditions:</Description>

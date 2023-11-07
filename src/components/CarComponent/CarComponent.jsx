@@ -48,12 +48,13 @@ const CarComponent = ({ advert }) => {
     setIsFavorite(isFavorite ? false : true);
   };
 
-  const address = advertInfo.address;
-  const cityCountry = address.slice(address.indexOf(',') + 2);
-  const city = cityCountry.slice(0, cityCountry.indexOf(','));
-  const country = cityCountry.slice(cityCountry.indexOf(',') + 2);
-  const company = advertInfo.rentalCompany;
-  const type = advertInfo.type;
+  const address = advert.address && advert.address;
+  const cityCountry = advert.address && address.slice(address.indexOf(',') + 2);
+  const city = advert.address && cityCountry.slice(0, cityCountry.indexOf(','));
+  const country =
+    advert.address && cityCountry.slice(cityCountry.indexOf(',') + 2);
+  const company = advert.rentalCompany;
+  const type = advert.type;
   const Id = advertInfo.id;
 
   return (
@@ -83,7 +84,10 @@ const CarComponent = ({ advert }) => {
           <RentalPrice>{advert.rentalPrice}</RentalPrice>
         </LineWare>
         <CarsOptions>
-          {city} | {country} | {company} | {type} | {Id}
+          {city && ` ${city} |`} {country && ` ${country} |`} Id: {Id}
+          {' |'}
+          {company && ` ${company} |`}
+          {type && ` Type: ${type} |`}
         </CarsOptions>
         <LearnMore type="button" onClick={handleModalOpen}>
           Learn More
