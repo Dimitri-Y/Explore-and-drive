@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Explore-and-drive/static/css/main.0c5b5366.css",
-    "main.js": "/Explore-and-drive/static/js/main.96a2e2a4.js",
+    "main.js": "/Explore-and-drive/static/js/main.70cd93c9.js",
     "static/js/415.bd374a2e.chunk.js": "/Explore-and-drive/static/js/415.bd374a2e.chunk.js",
     "static/css/837.69893e5d.chunk.css": "/Explore-and-drive/static/css/837.69893e5d.chunk.css",
     "static/js/837.3c864821.chunk.js": "/Explore-and-drive/static/js/837.3c864821.chunk.js",
@@ -18,7 +18,7 @@
     "static/media/chevron-up.svg": "/Explore-and-drive/static/media/chevron-up.6155ebb1460286357e7bbfff67169dca.svg",
     "static/media/chevron-down.svg": "/Explore-and-drive/static/media/chevron-down.24cd320d509ea2ebbeb4265f8030bafb.svg",
     "main.0c5b5366.css.map": "/Explore-and-drive/static/css/main.0c5b5366.css.map",
-    "main.96a2e2a4.js.map": "/Explore-and-drive/static/js/main.96a2e2a4.js.map",
+    "main.70cd93c9.js.map": "/Explore-and-drive/static/js/main.70cd93c9.js.map",
     "415.bd374a2e.chunk.js.map": "/Explore-and-drive/static/js/415.bd374a2e.chunk.js.map",
     "837.69893e5d.chunk.css.map": "/Explore-and-drive/static/css/837.69893e5d.chunk.css.map",
     "837.3c864821.chunk.js.map": "/Explore-and-drive/static/js/837.3c864821.chunk.js.map",
@@ -29,6 +29,6 @@
   },
   "entrypoints": [
     "static/css/main.0c5b5366.css",
-    "static/js/main.96a2e2a4.js"
+    "static/js/main.70cd93c9.js"
   ]
 }
