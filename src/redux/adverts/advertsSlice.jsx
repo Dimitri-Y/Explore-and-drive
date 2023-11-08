@@ -47,12 +47,12 @@ const advertsSlice = createSlice({
       .addCase(fetchAdverts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        action.payload.data.forEach(newAdvert => {
+        action.payload.forEach(newAdvert => {
           if (!state.items.some(advert => advert.id === newAdvert.id)) {
             state.items.push(newAdvert);
           }
         });
-        state.totalLimit = action.payload.data.length < state.limit;
+        state.totalLimit = action.payload.length < state.limit;
       })
       .addCase(fetchAdverts.rejected, (state, action) => {
         handleRejected(state, action);

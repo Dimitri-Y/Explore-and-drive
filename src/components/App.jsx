@@ -24,14 +24,7 @@ const App = () => {
           <Route path="*" element={<Home />} />
         </Routes>
       </Suspense>
-      {!isModal && (
-        <ScrollToTop
-          smooth
-          color="#0b44cd"
-          top="400"
-          ViewBox="256 256 256 256"
-        />
-      )}
+      {!isModal && <ScrollToTop smooth color="#0b44cd" top="400" />}
     </Container>
   );
 };
