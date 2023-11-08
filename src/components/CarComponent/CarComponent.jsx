@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { selectFavorites } from 'redux/adverts/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import LearnMoreModal from 'components/LearnMoreModal/LearnMoreModal';
+import { setIsModal } from 'redux/adverts/isModalActiveSlice';
 
 const CarComponent = ({ advert }) => {
   const dispatch = useDispatch();
@@ -26,9 +27,11 @@ const CarComponent = ({ advert }) => {
 
   const handleModalOpen = () => {
     setIsModalActive(true);
+    dispatch(setIsModal(true));
   };
   const handleModalClose = () => {
     setIsModalActive(false);
+    dispatch(setIsModal(false));
   };
 
   const pick = (obj, keys) => Object.fromEntries(keys.map(n => [n, obj[n]]));

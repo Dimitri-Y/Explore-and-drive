@@ -14,6 +14,8 @@ export const selectPage = state => state.adverts.page;
 
 export const selectTotalLimit = state => state.adverts.totalLimit;
 
+export const selectIsModalActive = state => state.isModalActive.isModalActive;
+
 export const selectVisibleAdverts = createSelector(
   [selectAdverts, selectFilter],
   (adverts, filter) => {

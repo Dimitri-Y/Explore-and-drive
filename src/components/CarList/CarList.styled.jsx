@@ -10,7 +10,6 @@ export const List = styled.ul`
   flex-wrap: wrap;
   flex-direction: row;
   height: auto;
-  /* justify-content: space-between; */
   padding-left: 18px;
   padding-right: 18px;
   padding-bottom: 32px;

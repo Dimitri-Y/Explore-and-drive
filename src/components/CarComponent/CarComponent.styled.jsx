@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 
 export const CarCard = styled.li`
-  // background-color: #000;
   border-radius: 16px;
   width: 274px;
   position: relative;
@@ -18,10 +17,8 @@ export const FavoriteButton = styled.a`
 `;
 
 export const Image = styled.img`
-  /* width: 100%; */
   border-radius: 16px;
   height: 268px;
-  /* background-size: contain; */
   object-fit: cover;
 `;
 
