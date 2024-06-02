@@ -11,6 +11,7 @@ const advertsInitialState = {
   page: 1,
   limit: 12,
   totalLimit: false,
+  lastVisibleId: null,
 };
 
 const handlePending = state => {
@@ -47,17 +48,19 @@ const advertsSlice = createSlice({
       .addCase(fetchAdverts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        action.payload.forEach(newAdvert => {
+        action.payload.adverts.forEach(newAdvert => {
           if (!state.items.some(advert => advert.id === newAdvert.id)) {
             state.items.push(newAdvert);
           }
         });
-        state.totalLimit = action.payload.length < state.limit;
+        state.lastVisibleId = action.payload.lastVisibleId;
+        state.totalLimit = action.payload.adverts.length < state.limit;
       })
       .addCase(fetchAdverts.rejected, (state, action) => {
         handleRejected(state, action);
       });
   },
 });
+
 export const { changeFavorites, incPage } = advertsSlice.actions;
 export const advertsReducer = advertsSlice.reducer;
