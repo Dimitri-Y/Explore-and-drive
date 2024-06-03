@@ -54,6 +54,45 @@ export const CarsOptions = styled.p`
   margin-top: 8px;
 `;
 
+export const AddOrderBlock = styled.div`
+  display: flex;
+  margin-top: 28px;
+  justify-content: space-around;
+`;
+export const AddOrderLabel = styled.p`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Manrope-500';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 18px;
+`;
+export const ButtonOrderBox = styled.button`
+  padding: 12px;
+  width: 40px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(52, 112, 255, 1);
+  border: 0px;
+  font-family: 'Manrope-600';
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0em;
+  cursor: pointer;
+  color: white;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover,
+  &:focus {
+    background-color: #0b44cd;
+  }
+`;
+
 export const LearnMore = styled.button`
   padding: 12px;
   width: 100%;
