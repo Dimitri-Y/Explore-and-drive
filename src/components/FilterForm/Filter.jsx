@@ -142,7 +142,7 @@ const Filter = () => {
               placeholder="From"
               onChange={e => {
                 const { value } = e.target;
-                const formattedValue = value.replace(/\D/g, ''); // Вилучаємо всі нецифрові символи
+                const formattedValue = value.replace(/\D/g, '');
                 formik.handleChange({
                   target: { name: 'from', value: formattedValue },
                 });
@@ -160,7 +160,7 @@ const Filter = () => {
               placeholder="To"
               onChange={e => {
                 const { value } = e.target;
-                const formattedValue = value.replace(/\D/g, ''); // Вилучаємо всі нецифрові символи
+                const formattedValue = value.replace(/\D/g, '');
                 formik.handleChange({
                   target: { name: 'to', value: formattedValue },
                 });

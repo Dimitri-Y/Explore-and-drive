@@ -2,6 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchAdverts } from './operations';
 
 const savedFavorites = JSON.parse(localStorage.getItem('favorites'));
+const savedRentalOrder = JSON.parse(localStorage.getItem('rentalOrder'));
+const savedRentalOrderCount = JSON.parse(
+  localStorage.getItem('rentalOrderCount')
+);
 
 const advertsInitialState = {
   items: [],
@@ -12,6 +16,8 @@ const advertsInitialState = {
   limit: 12,
   totalLimit: false,
   lastVisibleId: null,
+  rentalOrder: savedRentalOrder || [],
+  rentalOrderCount: savedRentalOrderCount || 0,
 };
 
 const handlePending = state => {
@@ -39,6 +45,45 @@ const advertsSlice = createSlice({
     incPage(state) {
       state.page = state.page + 1;
     },
+    changeRentalOrderPlus(state, action) {
+      state.rentalOrder.push(action.payload);
+      localStorage.setItem('rentalOrder', JSON.stringify(state.rentalOrder));
+      state.rentalOrderCount = state.rentalOrder.reduce((total, advert) => {
+        const rentalPrice =
+          typeof advert.rentalPrice === 'string'
+            ? parseInt(advert.rentalPrice.replace(/[^0-9.-]+/g, ''))
+            : advert.rentalPrice;
+
+        return total + (rentalPrice || 0);
+      }, 0);
+      localStorage.setItem(
+        'rentalOrderCount',
+        JSON.stringify(state.rentalOrderCount)
+      );
+    },
+    changeRentalOrderMinus(state, action) {
+      const rentalOrder = state.rentalOrder;
+      const index = rentalOrder.findIndex(
+        advert => advert.id === action.payload.id
+      );
+      if (index >= 0) {
+        state.rentalOrder.splice(index, 1);
+      } else {
+      }
+      state.rentalOrderCount = rentalOrder.reduce((total, advert) => {
+        const rentalPrice =
+          typeof advert.rentalPrice === 'string'
+            ? parseInt(advert.rentalPrice.replace(/[^0-9.-]+/g, ''))
+            : advert.rentalPrice;
+
+        return total + (rentalPrice || 0);
+      }, 0);
+      localStorage.setItem(
+        'rentalOrderCount',
+        JSON.stringify(state.rentalOrderCount)
+      );
+      localStorage.setItem('rentalOrder', JSON.stringify(state.rentalOrder));
+    },
   },
   extraReducers: builder => {
     builder
@@ -62,5 +107,10 @@ const advertsSlice = createSlice({
   },
 });
 
-export const { changeFavorites, incPage } = advertsSlice.actions;
+export const {
+  changeFavorites,
+  incPage,
+  changeRentalOrderPlus,
+  changeRentalOrderMinus,
+} = advertsSlice.actions;
 export const advertsReducer = advertsSlice.reducer;

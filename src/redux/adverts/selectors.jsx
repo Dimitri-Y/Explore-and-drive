@@ -16,7 +16,11 @@ export const selectTotalLimit = state => state.adverts.totalLimit;
 
 export const selectIsModalActive = state => state.isModalActive.isModalActive;
 
-export const lastVisible = state => state.adverts.lastVisible;
+export const selectLastVisible = state => state.adverts.lastVisible;
+
+export const selectRentalOrder = state => state.adverts.rentalOrder;
+
+export const selectRentalOrderCount = state => state.adverts.rentalOrderCount;
 
 export const selectVisibleAdverts = createSelector(
   [selectAdverts, selectFilter],

@@ -44,11 +44,19 @@ const CarList = ({ option }) => {
           <Loader />
         ) : option === 'favorites' ? (
           Favorites.map(advert => (
-            <CarComponent key={advert.id} advert={advert}></CarComponent>
+            <CarComponent
+              key={advert.id}
+              advert={advert}
+              option={option}
+            ></CarComponent>
           ))
         ) : (
           filterAdverts.map(advert => (
-            <CarComponent key={advert.id} advert={advert}></CarComponent>
+            <CarComponent
+              key={advert.id}
+              advert={advert}
+              option={option}
+            ></CarComponent>
           ))
         )}
       </List>

@@ -8,22 +8,39 @@ import {
   CarsOptions,
   LearnMore,
   FavoriteButton,
+  ButtonOrderBox,
+  AddOrderBlock,
+  AddOrderLabel,
 } from './CarComponent.styled';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { changeFavorites } from 'redux/adverts/advertsSlice';
-import { useState } from 'react';
-import { selectFavorites } from 'redux/adverts/selectors';
+import {
+  changeFavorites,
+  changeRentalOrderMinus,
+  changeRentalOrderPlus,
+} from 'redux/adverts/advertsSlice';
+import { useEffect, useState } from 'react';
+import { selectFavorites, selectRentalOrder } from 'redux/adverts/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import LearnMoreModal from 'components/LearnMoreModal/LearnMoreModal';
 import { setIsModal } from 'redux/adverts/isModalActiveSlice';
 
-const CarComponent = ({ advert }) => {
+const CarComponent = ({ advert, option }) => {
   const dispatch = useDispatch();
   const Favorites = useSelector(selectFavorites);
   const [isFavorite, setIsFavorite] = useState(
     Favorites.find(favorite => favorite.id === advert.id)
   );
   const [isModalActive, setIsModalActive] = useState(false);
+
+  const RentalOrder = useSelector(selectRentalOrder);
+  const [arrayRentalOrder, setArrayRentalOrder] = useState(
+    RentalOrder.filter(advertOrder => advertOrder.id === advert.id)
+  );
+  useEffect(() => {
+    setArrayRentalOrder(
+      RentalOrder.filter(advertOrder => advertOrder.id === advert.id)
+    );
+  }, [RentalOrder, advert.id]);
 
   const handleModalOpen = () => {
     setIsModalActive(true);
@@ -50,7 +67,18 @@ const CarComponent = ({ advert }) => {
     dispatch(changeFavorites(advert));
     setIsFavorite(isFavorite ? false : true);
   };
-
+  const handleRentalOrderPlus = () => {
+    dispatch(changeRentalOrderPlus(advert));
+    setArrayRentalOrder(
+      RentalOrder.filter(advertOrder => advertOrder.id === advert.id)
+    );
+  };
+  const handleRentalOrderMinus = () => {
+    dispatch(changeRentalOrderMinus(advert));
+    setArrayRentalOrder(
+      RentalOrder.filter(advertOrder => advertOrder.id === advert.id)
+    );
+  };
   const address = advert.address && advert.address;
   const cityCountry = advert.address && address.slice(address.indexOf(',') + 2);
   const city = advert.address && cityCountry.slice(0, cityCountry.indexOf(','));
@@ -92,6 +120,17 @@ const CarComponent = ({ advert }) => {
           {company && ` ${company} |`}
           {type && ` Type: ${type} |`}
         </CarsOptions>
+        {option === 'favorites' && (
+          <AddOrderBlock>
+            <ButtonOrderBox type="button" onClick={handleRentalOrderPlus}>
+              +
+            </ButtonOrderBox>
+            <AddOrderLabel>{arrayRentalOrder.length}</AddOrderLabel>
+            <ButtonOrderBox type="button" onClick={handleRentalOrderMinus}>
+              -
+            </ButtonOrderBox>
+          </AddOrderBlock>
+        )}
         <LearnMore type="button" onClick={handleModalOpen}>
           Learn More
         </LearnMore>
